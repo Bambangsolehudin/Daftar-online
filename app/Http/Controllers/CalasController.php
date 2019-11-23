@@ -58,7 +58,8 @@ class CalasController extends Controller
      */
     public function edit($id)
     {
-        //
+        $calas = Calas::find($id);
+        return view('calas.edit',compact('calas'));
     }
 
     /**
@@ -70,7 +71,10 @@ class CalasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+            // dd($request->all());
+        $calas=\App\Calas::find($id);
+        $calas->update($request->all());
+        return redirect('/calas')->with('status','Data calas berhasil diubah'); 
     }
 
     /**
@@ -81,7 +85,9 @@ class CalasController extends Controller
      */
     public function destroy($id)
     {
-        //
+       $calas=\App\Calas::find($id);
+       $calas->delete();
+       return redirect('/siswa')->with('status','Data calas berhasil dihapus!'); 
     }
 
     public function logout(Request $request) {
@@ -93,18 +99,9 @@ class CalasController extends Controller
         return view('sites.register');
     }
 
-        public function postregister(Request $request)
+    public function postregister(Request $request)
     {
-        $file = $request->file('krs');
-        $krs = $file->getClientOriginalName();
-        $request->file('krs')->move('img/krs/',$krs);
-        $krs1 = $krs;
-
-        $file1 = $request->file('avatar');
-        $avatar = $file1->getClientOriginalName();
-        $request->file('avatar')->move('img/avatar/',$avatar);
-        $avatar1= $avatar;
-        //input pendaftar jadi user
+        //request user
         $user= new  \App\User;
         $user->role='calas';
         $user->name=$request->nama;
@@ -112,27 +109,42 @@ class CalasController extends Controller
         $user->password=bcrypt($request->password);
         $user->save();
 
-         //insert ke tabel calas
-        $request->request->add(['user_id' => $user->id]);
-        $calas = new  \App\Calas;
-        $calas->npm = $request->npm;
-        $calas->nama = $request->nama;
-        $calas->kelas = $request->kelas;
-        $calas->jurusan = $request->jurusan;
-        $calas->fakultas = $request->fakultas;
-        $calas->alamat = $request->alamat;
-        $calas->nomor_telepon = $request->nomor_telepon;
-        $calas->krs = $krs1;
-        $calas->avatar = $avatar1;
-        $calas->save;
+        // insert ke tabel calas
+        if($request->hasFile('avatar'))
+        {
+            $destination= "avatar";
+            $filename = $request->file('avatar');
+            $filename ->move($destination, $filename->getClientOriginalName());       
+        }
 
-
-
-
+        if($request->hasFile('krs'))
+        {
+            $dada= "krs";
+            $krsname = $request->file('krs');
+            $krsname ->move($dada, $krsname->getClientOriginalName());       
+        }
        
-        $siswa= \App\Calas::create($request->all());
 
-        return redirect('/')->with('sukses','Data Pendaftaran berhasil Dikirim');
+        $calas = new Calas;
+        $calas->npm= $request->npm;
+        $calas->nama= $request->nama;
+        $calas->kelas= $request->kelas;
+        $calas->jurusan= $request->jurusan;
+        $calas->fakultas= $request->fakultas;
+        $calas->alamat= $request->alamat;
+        $calas->nomor_telepon= $request->nomor_telepon;
+        $calas->krs = 'krs/'.$krsname->getClientOriginalName();
+        $calas->avatar='avatar/'. $filename->getClientOriginalName();
+        $calas->user_id= $user->id;
+        $calas->status_kelulusan= 'Tidak Ada Status';
+        $calas->save();
+        return redirect()->back();
      
     }
+
+    public function status()
+    {
+        return view('calas.status');
+    }
 }
+

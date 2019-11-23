@@ -32,8 +32,8 @@
 							
 						</div>
 						<div class="col-lg-5 col-md-6 search-course-right section-gap">
-							<form class="form-wrap" action="/postregister" method="post" enctype="multipart/form-data">
-								@csrf
+							<form class="form-wrap" action="{{ url('postregister') }}" method="POST" enctype="multipart/form-data">
+								{{ csrf_field() }}
 								<h4 class="text-white pb-20 text-center mb-30">Search for Available Course</h4>	
 								<input type="text" class="form-control" name="npm" placeholder="Masukan NPM">	
 								<input type="text" class="form-control" name="nama" placeholder="Masukan Nama">

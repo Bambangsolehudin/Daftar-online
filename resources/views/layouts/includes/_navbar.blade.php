@@ -6,47 +6,30 @@
         <div class="navbar-btn">
           <button type="button" class="btn-toggle-fullwidth"><i class="lnr lnr-arrow-left-circle"></i></button>
         </div>
-        <form class="navbar-form navbar-left" method="get" action="/siswa">
-          <div class="input-group">
-            <input name="cari" type="search"  class="form-control" placeholder="Cari Siswa">
-            <span class="input-group-btn">
-            <button type="button" class="btn btn-primary">Cari</button>
-            </span>
-          </div>
+        <form class="navbar-form navbar-left" >
+        <h4>SISTEM LOGIN ASLAB MANAJEMEN</h4>
+          
         </form>
        
         <div id="navbar-menu">
           <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle icon-menu" data-toggle="dropdown">
-                <i class="lnr lnr-alarm"></i>
-                <span class="badge bg-danger">5</span>
-              </a>
-              <ul class="dropdown-menu notifications">
-                <li><a href="#" class="notification-item"><span class="dot bg-warning"></span>System space is almost full</a></li>
-                <li><a href="#" class="notification-item"><span class="dot bg-danger"></span>You have 9 unfinished tasks</a></li>
-                <li><a href="#" class="notification-item"><span class="dot bg-success"></span>Monthly report is available</a></li>
-                <li><a href="#" class="notification-item"><span class="dot bg-warning"></span>Weekly meeting in 1 hour</a></li>
-                <li><a href="#" class="notification-item"><span class="dot bg-success"></span>Your request has been approved</a></li>
-                <li><a href="#" class="more">See all notifications</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="lnr lnr-question-circle"></i> <span>Help</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Basic Use</a></li>
-                <li><a href="#">Working With Data</a></li>
-                <li><a href="#">Security</a></li>
-                <li><a href="#">Troubleshooting</a></li>
-              </ul>
-            </li>
+
+    
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-
+               <span>{{auth()->user()->name}}</span><img src="https://image.shutterstock.com/image-vector/user-icon-trendy-flat-style-260nw-418179865.jpg">
               <ul class="dropdown-menu">
-                <li><a href="/profilesaya"><i class="lnr lnr-user"></i> <span>Profile Saya</span></a></li>
+                <li><a href="/profilesaya"><i class="lnr lnr-user"></i> <span>{{auth()->user()->name}}</span></a></li>
                
-                <li><a href="/logout"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
+                <li><div class="pull-right">
+                  <a href="{{ route('logout') }}"  onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();" class="btn btn-default btn-flat">Sign out</a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>
+                </div>
+              </li>
               </ul>
             </li>
             <!-- <li>

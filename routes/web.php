@@ -11,18 +11,30 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', 'SiteController@home');
 
 Auth::routes();
-Route::get('logout', 'CalasController@logout');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::name('user')->group(function(){
 
 
 Route::get('/calas', 'CalasController@index');
-Route::get('/register', 'CalasController@register');
+Route::get('/status_kelulusan', 'CalasController@status');
+Route::get('/calas/{id}/edit', 'CalasController@edit');
+Route::get('/calas/{id}/delete', 'CalasController@destroy');
+Route::post('/calas/{id}/update', 'CalasController@update');
+
+});
+
+
+
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/registercalas', 'CalasController@register');
 Route::post('/postregister','CalasController@postregister');
 
 
